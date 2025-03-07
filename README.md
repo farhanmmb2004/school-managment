@@ -1,127 +1,75 @@
-School Management API
+# School Management API
 
 This is a REST API for managing schools, including adding new schools and retrieving a list of schools based on user location.
 
-Base URL
-
+## Base URL
 https://school-managment-1-sqsz.onrender.com
 
-Endpoints
+## Endpoints
 
-1. Add a School
-
-Endpoint:
-
+### 1. Add a School
+**Endpoint:**
+```
 POST /addSchool
+```
 
-Description: Adds a new school to the database.
+**Description:** Adds a new school to the database.
 
-Request Headers:
+**Request Headers:**
+- Content-Type: multipart/form-data
 
-Content-Type: multipart/form-data
+**Request Parameters (Form Data):**
 
-Request Parameters (Form Data):
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| name | String | Yes | Name of the school |
+| address | String | Yes | Address of the school |
+| latitude | Float | Yes | Latitude coordinate (-90 to 90) |
+| longitude | Float | Yes | Longitude coordinate (-180 to 180) |
 
-Parameter
-
-Type
-
-Required
-
-Description
-
-name
-
-String
-
-Yes
-
-Name of the school
-
-address
-
-String
-
-Yes
-
-Address of the school
-
-latitude
-
-Float
-
-Yes
-
-Latitude coordinate (-90 to 90)
-
-longitude
-
-Float
-
-Yes
-
-Longitude coordinate (-180 to 180)
-
-Example Request:
-
+**Example Request:**
+```bash
 curl -X POST "https://school-managment-1-sqsz.onrender.com/addSchool" \
      -H "Content-Type: multipart/form-data" \
      -F "name=ABC School" \
      -F "address=123 Main St, City" \
      -F "latitude=40.7128" \
      -F "longitude=-74.0060"
+```
 
-Response:
-
+**Response:**
+```json
 {
   "message": "School added successfully",
   "schoolId": 1
 }
+```
 
-2. List Schools
-
-Endpoint:
-
+### 2. List Schools
+**Endpoint:**
+```
 GET /listSchools
+```
 
-Description: Retrieves a list of schools sorted by proximity to the given location.
+**Description:** Retrieves a list of schools sorted by proximity to the given location.
 
-Request Headers:
+**Request Headers:**
+- Content-Type: application/x-www-form-urlencoded
 
-Content-Type: application/x-www-form-urlencoded
+**Query Parameters:**
 
-Query Parameters:
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| latitude | Float | Yes | User's current latitude (-90 to 90) |
+| longitude | Float | Yes | User's current longitude (-180 to 180) |
 
-Parameter
-
-Type
-
-Required
-
-Description
-
-latitude
-
-Float
-
-Yes
-
-User's current latitude (-90 to 90)
-
-longitude
-
-Float
-
-Yes
-
-User's current longitude (-180 to 180)
-
-Example Request:
-
+**Example Request:**
+```bash
 curl -X GET "https://school-managment-1-sqsz.onrender.com/listSchools?latitude=40.7128&longitude=-74.0060"
+```
 
-Response:
-
+**Response:**
+```json
 {
   "count": 2,
   "schools": [
@@ -143,37 +91,34 @@ Response:
     }
   ]
 }
+```
 
-Setup and Installation
+## Setup and Installation
 
-Clone the repository:
-
+1. Clone the repository:
+```bash
 git clone https://github.com/your-repo/school-management.git
 cd school-management
+```
 
-Install dependencies:
-
+2. Install dependencies:
+```bash
 npm install
+```
 
-Set up environment variables in a .env file:
+3. Set up environment variables in a `.env` file
 
-
-Run the server:
-
+4. Run the server:
+```bash
 node app.js
+```
 
-Technologies Used
+## Technologies Used
+- Node.js
+- Express.js
+- MySQL2
+- Body-parser
+- Express-validator
 
-Node.js
-
-Express.js
-
-MySQL2
-
-Body-parser
-
-Express-validator
-
-Author
-
+## Author
 Mohd Farhan Khan
