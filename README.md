@@ -1,107 +1,179 @@
-School Management API Setup Guide
-Prerequisites
+School Management API
 
-Node.js installed
-MySQL server installed and running
-npm (Node Package Manager)
+This is a REST API for managing schools, including adding new schools and retrieving a list of schools based on user location.
 
-Setup Instructions
-1. Create Project Folder and Initialize
-bashCopymkdir school-management-api
-cd school-management-api
-npm init -y
-2. Install Required Dependencies
-bashCopynpm install express mysql2 body-parser express-validator
-3. Create MySQL Database
-sqlCopyCREATE DATABASE school_management;
-USE school_management;
-4. Run the Application
-bashCopynode app.js
-The server will start on port 3000 (or the port specified in your environment variables).
-API Documentation
-1. Add School API
-Endpoint: /addSchool
-Method: POST
-Content-Type: application/json
-Request Body:
-jsonCopy{
-  "name": "ABC School",
-  "address": "123 Education St, City",
-  "latitude": 40.7128,
-  "longitude": -74.0060
-}
-Success Response:
-jsonCopy{
+Base URL
+
+https://school-managment-1-sqsz.onrender.com
+
+Endpoints
+
+1. Add a School
+
+Endpoint:
+
+POST /addSchool
+
+Description: Adds a new school to the database.
+
+Request Headers:
+
+Content-Type: multipart/form-data
+
+Request Parameters (Form Data):
+
+Parameter
+
+Type
+
+Required
+
+Description
+
+name
+
+String
+
+Yes
+
+Name of the school
+
+address
+
+String
+
+Yes
+
+Address of the school
+
+latitude
+
+Float
+
+Yes
+
+Latitude coordinate (-90 to 90)
+
+longitude
+
+Float
+
+Yes
+
+Longitude coordinate (-180 to 180)
+
+Example Request:
+
+curl -X POST "https://school-managment-1-sqsz.onrender.com/addSchool" \
+     -H "Content-Type: multipart/form-data" \
+     -F "name=ABC School" \
+     -F "address=123 Main St, City" \
+     -F "latitude=40.7128" \
+     -F "longitude=-74.0060"
+
+Response:
+
+{
   "message": "School added successfully",
   "schoolId": 1
 }
-Error Response:
-jsonCopy{
-  "errors": [
-    {
-      "location": "body",
-      "msg": "School name is required",
-      "param": "name"
-    }
-  ]
-}
-2. List Schools API
-Endpoint: /listSchools
-Method: GET
-Parameters:
 
-latitude (float): User's latitude
-longitude (float): User's longitude
+2. List Schools
+
+Endpoint:
+
+GET /listSchools
+
+Description: Retrieves a list of schools sorted by proximity to the given location.
+
+Request Headers:
+
+Content-Type: application/x-www-form-urlencoded
+
+Query Parameters:
+
+Parameter
+
+Type
+
+Required
+
+Description
+
+latitude
+
+Float
+
+Yes
+
+User's current latitude (-90 to 90)
+
+longitude
+
+Float
+
+Yes
+
+User's current longitude (-180 to 180)
 
 Example Request:
-CopyGET /listSchools?latitude=40.7128&longitude=-74.0060
-Success Response:
-jsonCopy{
+
+curl -X GET "https://school-managment-1-sqsz.onrender.com/listSchools?latitude=40.7128&longitude=-74.0060"
+
+Response:
+
+{
   "count": 2,
   "schools": [
     {
       "id": 1,
       "name": "ABC School",
-      "address": "123 Education St, City",
+      "address": "123 Main St, City",
       "latitude": 40.7128,
       "longitude": -74.0060,
-      "distance": 0
+      "distance": 0.0
     },
     {
       "id": 2,
       "name": "XYZ School",
-      "address": "456 Learning Ave, Town",
-      "latitude": 40.7300,
-      "longitude": -74.0200,
-      "distance": 2.1532
+      "address": "456 Elm St, City",
+      "latitude": 40.7328,
+      "longitude": -74.0160,
+      "distance": 2.3
     }
   ]
 }
-Testing the API
-Using cURL
 
-Add a school:
+Setup and Installation
 
-bashCopycurl -X POST http://localhost:3000/addSchool \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Central High School","address":"100 Main St, Cityville","latitude":40.7128,"longitude":-74.0060}'
+Clone the repository:
 
-List schools by proximity:
+git clone https://github.com/your-repo/school-management.git
+cd school-management
 
-bashCopycurl "http://localhost:3000/listSchools?latitude=40.7000&longitude=-74.0000"
-Using Postman
+Install dependencies:
 
-For adding a school:
+npm install
 
-Set method to POST
-Enter URL: http://localhost:3000/addSchool
-In Headers tab, add Content-Type: application/json
-In Body tab, select "raw" and enter JSON with school details
-Click Send
+Set up environment variables in a .env file:
 
 
-For listing schools:
+Run the server:
 
-Set method to GET
-Enter URL: http://localhost:3000/listSchools?latitude=40.7000&longitude=-74.0000
-Click Send
+node app.js
+
+Technologies Used
+
+Node.js
+
+Express.js
+
+MySQL2
+
+Body-parser
+
+Express-validator
+
+Author
+
+Mohd Farhan Khan
